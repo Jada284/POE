@@ -65,12 +65,7 @@ public class POE_Part1 {
        if(loginSuccessful){
            JOptionPane.showMessageDialog(dialog, "Welcome to EasyKanban");
       
-           //Ask the user how many tasks they want to enter
-          
-           //int numberOfTasks=
-           Integer.parseInt(JOptionPane.showInputDialog("How many tasks do you wish to enter?"));
            
-           Tasks newtasks= new Tasks();
                    
        }
        
