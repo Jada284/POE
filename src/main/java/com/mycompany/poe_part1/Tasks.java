@@ -13,68 +13,40 @@ import javax.swing.JOptionPane;
  * @author RC_Student_lab
  */
 public class Tasks {
-    //Task properties
+    //Task details
     
-    private String taskname;//Name of the task
-    private String taskDescription;//Description of the task
-    private String DeveloperDetails;//Developer assigned to the task
-    private String TaskDuration;//Duration of the task in hours
-    private String TaskStatus;//Current status of the task
-    private int TaskNumber;//Auto-generated task number
-    private int TaskID;//Auto-generated task ID
-    //Static counter for generating unique task numbers
-    private static int taskCounter=0;
+    private String taskname;
+    private String taskDescription;
+    private String DeveloperDetails;
+    private int TaskDuration ;
+    private String TaskStatus;
+    private int TaskNumber;
+    private String TaskID;
+    private static int totalHours=0;
     
-   /* //Construct to initialize a new task
-     public Tasks(String TaskName,String TaskDescription,String DeveloperDetails,String TaskDuration,String TaskStatus,int TaskNumber, int TaskID){
-        this.taskname= TaskName;
-        this.taskDescription= TaskDescription;
-        this.DeveloperDetails= DeveloperDetails;
-        this.TaskDuration= TaskDuration;
-        this.TaskStatus= TaskStatus;
-        this.TaskNumber= TaskNumber;
-        this.TaskID= TaskID;
-        this.TaskNumber= taskCounter++;
-        
-        //  this.taskID= createTaskID();//Generate TaskID
-        //  checkTaskDescription();//Validate taskDescription
-    }*/
+  
     
-    /* private List<Tasks>taskList;
-     float totalHours;
-     
-     public Tasks(){
-         this.taskList= new ArrayList<>();
-     }*/
-   public boolean checkTaskDescription(String description){
-       boolean valid= false;
-       if(taskDescription.length()<=50){
-           JOptionPane.showMessageDialog(null,"Task description successfuly");
-           
-           valid= true;//description is too long
-       }else {
-           JOptionPane.showMessageDialog(null,"Task description not successful");
-           valid= false;
-       }
-      return valid;
+     //Checking if task Description is valid
+   public boolean checkTaskDescription(String taskDescription){
+      return taskDescription.length()<50;
    }
 
    
    
-   //Creating a unique taskID
+   //Creating a taskID
    public String createTaskID(String taskname,String DeveloperDetails,int TaskNumber){
        String name= taskname.length()>=2?
        taskname.substring(0,2):taskname.toUpperCase();
        
        String Developer= DeveloperDetails.length()>=3?
-       DeveloperDetails.substring(0,3):DeveloperDetails.toUpperCase();
+       DeveloperDetails.substring(DeveloperDetails.length()-3) :DeveloperDetails.toUpperCase();
        
-       return name +":"+ TaskNumber+":" + Developer;
+       return name.toUpperCase() +":"+ TaskNumber+":" + Developer.toUpperCase();
        
 }
 
    //Returning the full details of the task
-   public String printTaskDetails(Tasks task){
+   public String printTaskDetails(int TaskDetails){
        return "Task Status:"+ TaskStatus+ "\nDeveloper Details:"+ DeveloperDetails+ "\nTask Number:"+ TaskNumber+"\nTask Name:"+ taskname+ "\nTask Description:"+ taskDescription+ "\nTask ID:"+ TaskID+ "\nTask Duration:"+ TaskDuration+"hours"; 
    }
    public String Status (String TaskStatus){
@@ -101,6 +73,7 @@ public class Tasks {
                    
                case 3:
                    TaskStatus="Done";
+                   
                    valid= true;
                    
                    break;
@@ -111,7 +84,7 @@ public class Tasks {
            }
            
                    
-           
+         JOptionPane.showMessageDialog(null, TaskStatus);  
            
        }
       return TaskStatus;
@@ -120,30 +93,45 @@ public class Tasks {
    
    //task details
    public void AddTasks(){
+       ArrayList<Tasks> taskList=new ArrayList<>();
        int numTasks=
        Integer.parseInt(JOptionPane.showInputDialog("Enter the number of tasks?"));
        for (int k=0;k<numTasks;k++){
-           String taskName= JOptionPane.showInputDialog("Enter taskname:");
+            taskname= JOptionPane.showInputDialog("Enter taskname:"+ (k+1));
            
-           String taskDescription= JOptionPane.showInputDialog("Enter taskDescription(max 50 characters");
+           do{
+                taskDescription= JOptionPane.showInputDialog("Enter taskDescription(max 50 characters");
            
-           String DeveloperDetails= JOptionPane.showInputDialog("Enter DeveloperDetails(first last name");
-           
-           int TaskDuration= Integer.parseInt(JOptionPane.showInputDialog("Enter Task Duration(in hours):"));
-           
-           totalHours+= TaskDuration;
-           
-           
-           int TaskNumber= k++;
-           String menu= Status(TaskStatus);
-           String TaskStatus= createTaskID(taskname, DeveloperDetails,TaskNumber);
-           
-          
-           
-        
+           if(!checkTaskDescription(taskDescription)){
+               JOptionPane.showMessageDialog(null, "the taskDescription is too long");
+               
+           }
+           else{
+              JOptionPane.showMessageDialog(null,"Task description captured successfully");
+           }
+           }while(!checkTaskDescription(taskDescription));
+           DeveloperDetails= JOptionPane.showInputDialog("Enter DeveloperDetails(first last name");
            
            
+            TaskDuration= Integer.parseInt(JOptionPane.showInputDialog("Enter Task Duration(in hours):"));
+           
+            
+           //int TaskNumber= k;
+           
+            TaskID=createTaskID(taskname, DeveloperDetails,k);
+           JOptionPane.showMessageDialog(null,"TaskID:" + TaskID);
+           
+           String status = Status(TaskStatus);
+           
+            TaskStatus=status;
+            
+           //String TaskStatus= createTaskID(taskname, DeveloperDetails,k);
+           
+           JOptionPane.showMessageDialog(null,"Print details\n"+printTaskDetails(k));
        }
    }
+
+    
+    }
    
-}
+
